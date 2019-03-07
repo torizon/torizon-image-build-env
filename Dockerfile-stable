@@ -1,5 +1,3 @@
-# docker run -it -e MACHINE=<colibri-imx6> <image_name>
-
 FROM ubuntu:18.04
 
 # OpenEmbedded Dependencies
@@ -66,12 +64,9 @@ RUN mkdir ~/bin && \
 RUN mkdir ~/torizon && \
     git config --global user.name username && \
     git config --global user.email you@email.com && \ 
-    cd ~/torizon && ~/bin/repo init -u https://github.com/toradex/toradex-torizon-manifest -b master && \
+    cd ~/torizon && ~/bin/repo init -u https://github.com/toradex/toradex-torizon-manifest -b 3747f90d85177a4581701c60801ea5794b2da921 && \
     cd ~/torizon && ~/bin/repo sync
 
 ENV MACHINE $MACHINE
 
 CMD [ "/bin/bash", "-c" , "cd ~/torizon && MACHINE=$MACHINE source setup-environment && cd ~/torizon/build-torizon && echo 'ACCEPT_FSL_EULA=\"1\"' >> ~/torizon/build-torizon/conf/local.conf && bitbake torizon-core-docker" ]
-
-# After the build is finished, just
-# $ docker cp <container_name>:/home/user/torizon/build-torizon/deploy .
