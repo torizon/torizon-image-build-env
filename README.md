@@ -6,8 +6,14 @@ You can build using
 ```
 $ docker run -it -e MACHINE=<machine-id> <image_name>
 ```
-
-After the build is finished, copy the image to your local computer
+And copy the image to host after the build is finished
 ```
 $ docker cp <container_name>:/home/user/torizon/build-torizon/deploy .
 ```
+
+**or**
+
+Create a docker volume to sync with the container's files
+```
+$ docker volume create <volume>
+$ docker run -it -v <volume>:/home/user/torizon -e MACHINE=<machine-id> <image_name>
