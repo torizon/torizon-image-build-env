@@ -17,3 +17,11 @@ Create a docker volume to sync with the container's files
 ```
 $ docker volume create <volume>
 $ docker run -it -v <volume>:/home/user/torizon -e MACHINE=<machine-id> <image_name>
+```
+
+**or**
+
+It is possible to share folders between containers, such as:
+```
+docker run -it -v /path/to/downloads:/home/user/torizon/downloads -v /path/to/sstate-cache:/home/user/torizon/sstate-cache -v /path/to/deploy:/home/user/torizon/build-torizon/deploy -e MACHINE=<target> <image_name>
+```
