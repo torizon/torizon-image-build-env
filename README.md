@@ -22,4 +22,4 @@ docker run -it -v /path/to/downloads:/home/user/torizon/downloads -v /path/to/ss
 
 ### Building other images
 
-If you want to build images other than torizon-core-docker, pass the variable -e TARGET=torizon-... when running the container
+If you want to build images other than torizon-core-docker, pass the variable `-e TARGET=torizon-...` when running the container
