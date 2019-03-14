@@ -69,6 +69,15 @@ RUN mkdir ~/torizon && \
 
 ENV MACHINE $MACHINE
 
+ENV TARGET $TARGET
+
 RUN mkdir -p ~/torizon/build-torizon/conf
 
-CMD [ "/bin/bash", "-c" , "cd ~/torizon && MACHINE=$MACHINE source setup-environment && cd ~/torizon/build-torizon && echo 'ACCEPT_FSL_EULA=\"1\"' >> ~/torizon/build-torizon/conf/local.conf && bitbake torizon-core-docker" ]
+COPY startup.sh .
+
+USER root
+RUN chmod 777 -R ./startup.sh
+
+USER user
+
+CMD [ "/bin/bash", "-c" , "./startup.sh" ]
