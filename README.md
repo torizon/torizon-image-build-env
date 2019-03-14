@@ -25,3 +25,7 @@ It is possible to share folders between containers, such as:
 ```
 docker run -it -v /path/to/downloads:/home/user/torizon/downloads -v /path/to/sstate-cache:/home/user/torizon/sstate-cache -v /path/to/deploy:/home/user/torizon/build-torizon/deploy -e MACHINE=<target> <image_name>
 ```
+
+----------------------
+
+If you want to build images other than torizon-core-docker, pass the variable -e TARGET=torizon-... when running the container
