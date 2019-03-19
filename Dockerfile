@@ -71,8 +71,6 @@ ENV MACHINE $MACHINE
 
 ENV TARGET $TARGET
 
-RUN mkdir -p ~/torizon/build-torizon/conf
-
 COPY startup.sh .
 
 USER root
