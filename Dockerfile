@@ -64,8 +64,7 @@ RUN mkdir ~/bin && \
 RUN mkdir ~/torizon && \
     git config --global user.name username && \
     git config --global user.email you@email.com && \ 
-    cd ~/torizon && ~/bin/repo init -u https://github.com/toradex/toradex-torizon-manifest -b 3747f90d85177a4581701c60801ea5794b2da921 && \
-    cd ~/torizon && ~/bin/repo sync
+    cd ~/torizon && ~/bin/repo init -u https://github.com/toradex/toradex-torizon-manifest -b 3747f90d85177a4581701c60801ea5794b2da921
 
 ENV MACHINE $MACHINE
 
