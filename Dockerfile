@@ -45,10 +45,9 @@ RUN echo $DEV_USER:$DEV_USER_PASSWD | chpasswd
 # Initialize development environment for $DEV_USER.
 RUN sudo -u $DEV_USER -H git config --global credential.helper 'cache --timeout=3600'
 
-# Merge
-
-USER builder
-WORKDIR /home/user
+# Merge starts here ----
+USER $DEV_USER
+WORKDIR /home/$DEV_USER
 
 # Repo
 RUN mkdir ~/bin && \ 
@@ -60,7 +59,6 @@ RUN mkdir ~/torizon && \
     cd ~/torizon && ~/bin/repo init -u https://github.com/toradex/toradex-torizon-manifest -b master
 
 ENV MACHINE $MACHINE
-
 ENV TARGET $TARGET
 
 COPY startup.sh .
@@ -68,6 +66,6 @@ COPY startup.sh .
 USER root
 RUN chmod 777 -R ./startup.sh
 
-USER builder
+USER $DEV_USER
 
 CMD [ "/bin/bash", "-c" , "./startup.sh" ]
