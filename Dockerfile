@@ -57,8 +57,6 @@ RUN mkdir ~/bin && \
 
 # Torizon
 RUN mkdir ~/torizon && \
-    git config --global user.name username && \
-    git config --global user.email you@email.com && \ 
     cd ~/torizon && ~/bin/repo init -u https://github.com/toradex/toradex-torizon-manifest -b master
 
 ENV MACHINE $MACHINE
