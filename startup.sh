@@ -1,7 +1,7 @@
 cd ~/torizon && ~/bin/repo sync
 echo "You have to accept freescale EULA. Read it carefully and then accept it."
 sleep 3
-cat /home/user/torizon/layers/meta-freescale/EULA
+cat ~/torizon/layers/meta-freescale/EULA
 read -p "Do you accept the EULA? [y/n] " yn
 case $yn in
     [Yy]* ) echo 'EULA accepted';;
