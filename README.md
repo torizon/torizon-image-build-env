@@ -6,18 +6,18 @@ $ docker run -it -e MACHINE=<machine-id> <image_name>
 ```
 And copy the image to host after the build is finished
 ```
-$ docker cp <container_name>:/home/user/torizon/build-torizon/deploy .
+$ docker cp <container_name>:/home/builder/torizon/build-torizon/deploy .
 ```
 
 2. Create a docker volume to sync with the container's files
 ```
 $ docker volume create <volume>
-$ docker run -it -v <volume>:/home/user/torizon -e MACHINE=<machine-id> <image_name>
+$ docker run -it -v <volume>:/home/builder/torizon -e MACHINE=<machine-id> <image_name>
 ```
 
 3. It is possible to share folders between containers, such as:
 ```
-docker run -it -v /path/to/downloads:/home/user/torizon/downloads -v /path/to/sstate-cache:/home/user/torizon/sstate-cache -v /path/to/deploy:/home/user/torizon/build-torizon/deploy -e MACHINE=<target> <image_name>
+docker run -it -v /path/to/downloads:/home/builder/torizon/downloads -v /path/to/sstate-cache:/home/builder/torizon/sstate-cache -v /path/to/deploy:/home/builder/torizon/build-torizon/deploy -e MACHINE=<target> <image_name>
 ```
 
 ### Building other images

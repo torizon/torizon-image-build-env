@@ -1,58 +1,53 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
+MAINTAINER Andy Doan <andy@opensourcefoundries.com>
 
-# OpenEmbedded Dependencies
-RUN dpkg --add-architecture i386 && \
-    apt-get update && \
-    apt-get install -y g++-5-multilib \
-    vim \
-    curl \
-    dosfstools \
-    gawk \
-    g++-multilib \
-    gcc-multilib \
-    lib32z1-dev \
-    libcrypto++-dev:i386 \
-    liblzo2-dev:i386 \
-    lzop \
-    libsdl1.2-dev \
-    libstdc++-5-dev:i386 \
-    libusb-1.0-0:i386 \
-    libusb-1.0-0-dev:i386 \
-    uuid-dev:i386 \
-    texinfo \
-    chrpath \
-    gawk \
-    wget \
-    git-core \
-    diffstat \
-    unzip \
-    texinfo \
-    gcc-multilib \
-    build-essential \
-    chrpath \
-    socat \
-    cpio \
-    python \
-    python3 \
-    python3-pip \
-    python3-pexpect \
-    xz-utils \
-    debianutils \
-    iputils-ping && \
-    cd /usr/lib && \
-    ln -s libcrypto++.so.9.0.0 libcryptopp.so.6
-    
+# bitbake requires a utf8 filesystem encoding
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
-# Solve locales
-RUN apt-get install -y locales && \
-    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    dpkg-reconfigure --frontend=noninteractive locales
+ARG DEBIAN_FRONTEND=noninteractive
+ARG DEV_USER_NAME=Builder
+ARG DEV_USER=builder
+ARG DEV_USER_PASSWD=builder
 
-ENV LANG en_US.UTF-8 
+# OSF PPA for additional dependencies and newer packages
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	   software-properties-common \
+	&& add-apt-repository ppa:osf-maintainers/ppa \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/*
 
-# Add user (bitbake won't allow root)
-RUN useradd -ms /bin/bash user
-USER user
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		android-tools-fsutils ca-certificates chrpath cpio diffstat \
+		file gawk g++ iproute2 iputils-ping less libmagickwand-dev \
+		libmath-prime-util-perl libsdl1.2-dev libssl-dev locales \
+		openjdk-9-jre openssh-client perl-modules python2.7 python-requests python3 \
+		repo sudo texinfo vim-tiny wget whiptail libelf-dev curl\
+	&& apt-get autoremove -y \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/* \
+	&& locale-gen en_US.UTF-8
+
+# Create the user which will run the SDK binaries.
+RUN useradd -c $DEV_USER_NAME \
+		-d /home/$DEV_USER \
+		-G sudo,dialout,floppy,plugdev,users \
+		-m \
+		-s /bin/bash \
+		$DEV_USER
+
+# Add default password for the SDK user (useful with sudo)
+RUN echo $DEV_USER:$DEV_USER_PASSWD | chpasswd
+
+# Initialize development environment for $DEV_USER.
+RUN sudo -u $DEV_USER -H git config --global credential.helper 'cache --timeout=3600'
+
+# Merge
+
+USER builder
 WORKDIR /home/user
 
 # Repo
@@ -75,6 +70,6 @@ COPY startup.sh .
 USER root
 RUN chmod 777 -R ./startup.sh
 
-USER user
+USER builder
 
 CMD [ "/bin/bash", "-c" , "./startup.sh" ]
