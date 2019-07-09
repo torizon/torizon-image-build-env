@@ -1,25 +1,7 @@
-### There are several ways to build torizon:
+# TorizonCore Build Environment #
 
-1. You can build using 
-```
-$ docker run -it -e MACHINE=<machine-id> <image_name>
-```
-And copy the image to host after the build is finished
-```
-$ docker cp <container_name>:/home/builder/torizon/build-torizon/deploy .
-```
+The TorizonCore Build Environment is a project that provides a Yocto build environment for building the TorizonCore images. It is composed of a CROPS-based Docker image and additional documentation.
 
-2. Create a docker volume to sync with the container's files
-```
-$ docker volume create <volume>
-$ docker run -it -v <volume>:/home/builder/torizon -e MACHINE=<machine-id> <image_name>
-```
+For more details, read the documentation on the [Toradex Developer Website](https://developer.toradex.com):
 
-3. It is possible to share folders between containers, such as:
-```
-docker run -it -v /path/to/downloads:/home/builder/torizon/downloads -v /path/to/sstate-cache:/home/builder/torizon/sstate-cache -v /path/to/deploy:/home/builder/torizon/build-torizon/deploy -e MACHINE=<target> <image_name>
-```
-
-### Building other images
-
-If you want to build images other than torizon-core-docker, pass the variable `-e TARGET=torizon-...` when running the container
+- [Toradex Developer Website - TorizonCore Build Environment](https://developer.toradex.com "TorizonCore Build Environment")
