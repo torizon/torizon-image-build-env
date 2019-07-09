@@ -61,11 +61,11 @@ RUN mkdir ~/torizon && \
 ENV MACHINE $MACHINE
 ENV TARGET $TARGET
 
-COPY startup.sh .
+COPY startup-tdx-torizon.sh .
 
 USER root
-RUN chmod 777 -R ./startup.sh
+RUN chmod 777 -R ./startup-tdx-torizon.sh
 
 USER $DEV_USER
 
-CMD [ "/bin/bash", "-c" , "./startup.sh" ]
+CMD [ "/bin/bash", "-c" , "./startup-tdx-torizon.sh" ]
