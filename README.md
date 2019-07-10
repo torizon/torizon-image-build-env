@@ -1,3 +1,7 @@
-Definition is Work-in-Progress
+# TorizonCore Build Environment #
 
-A container image providing an environment to build TordyOS
+The TorizonCore Build Environment is a project that provides a Yocto build environment for building the TorizonCore images. It is composed of a CROPS-based Docker image and additional documentation.
+
+For more details, read the documentation on the [Toradex Developer Website](https://developer.toradex.com):
+
+- [Toradex Developer Website - TorizonCore Build Environment](https://developer.toradex.com "TorizonCore Build Environment")
