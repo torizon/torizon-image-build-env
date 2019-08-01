@@ -4,4 +4,4 @@ The TorizonCore Build Environment is a project that provides a Yocto build envir
 
 For more details, read the documentation on the [Toradex Developer Website](https://developer.toradex.com):
 
-- [Toradex Developer Website - TorizonCore Build Environment](https://developer.toradex.com "TorizonCore Build Environment")
+- [Toradex Developer Website - TorizonCore Build Environment](https://developer.toradex.com/knowledge-base/torizoncore-build-environment "TorizonCore Build Environment")
