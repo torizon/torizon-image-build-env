@@ -6,7 +6,7 @@ DISTVAL=torizon
 # Check if default build directory is setup
 if [ -z "$1" ]
 then
-    BDDIR=build-torizon
+    BDDIR=build-torizon*
 else
     BDDIR="$1"
 fi
@@ -14,7 +14,12 @@ fi
 # Check if branch is passed as argument
 if [ -z "$BRANCH" ]
 then
-    BRANCH=master
+    BRANCH=dunfell-5.x.y
+fi
+
+if [ -z "$MANIFEST" ]
+then
+    MANIFEST=torizoncore/default.xml
 fi
 
 # Configure Git if not configured
@@ -32,7 +37,7 @@ cd $WDIR/$DISTVAL
 repo status 2> /dev/null
 if [ "$?" = "1" ]
 then
-    repo init -u https://github.com/toradex/toradex-torizon-manifest -b $BRANCH
+    repo init -u https://git.toradex.com/toradex-manifest.git -b $BRANCH -m $MANIFEST
     repo sync
 fi # Do not sync automatically if repo is setup already
 

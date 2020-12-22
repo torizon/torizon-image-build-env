@@ -1,4 +1,4 @@
-FROM crops/poky
+FROM crops/poky:debian-10
 
 USER root
 
@@ -6,12 +6,13 @@ USER root
 # JDK for OSTree push
 # Vim for convenience
 RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
-    repo \
+    curl \
     default-jre \
     vim-tiny \
-    && apt-get autoremove -y \
-	&& apt-get purge -y --auto-remove \
-	&& rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo
+RUN chmod a+x /bin/repo
 
 # Script to automate env setup
 COPY startup-tdx-torizon.sh startup-tdx-poky.sh /usr/bin/
