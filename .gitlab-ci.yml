@@ -1,0 +1,61 @@
+image: docker:latest
+
+variables:
+  # This should be set by docker image already, just to be sure...
+  DOCKER_HOST: tcp://docker:2375
+  # Use overlayfs driver for better performance
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay2
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  GITLAB_DOCKERREGISTRY_SUFFIX: ${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}
+  GITLAB_DOCKERREGISTRY_SUFFIX_LATEST: ${CI_COMMIT_REF_SLUG}-latest
+  DOCKER_HUB_TAG: dunfell-5.x.y
+
+services:
+  - name: docker:dind
+stages:
+  - build
+  - deploy
+
+# Docker image builds
+#
+# Build the Docker images and push
+# it to Gitlab's internal Docker registry
+.docker-build:
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # Try to download latest image for cache, but don't fail if it does not exist
+    - docker pull ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${GITLAB_DOCKERREGISTRY_SUFFIX_LATEST} || true
+    - docker build --cache-from ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${GITLAB_DOCKERREGISTRY_SUFFIX_LATEST} 
+                     -f "Dockerfile"
+                     -t ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${GITLAB_DOCKERREGISTRY_SUFFIX}
+                     -t ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${GITLAB_DOCKERREGISTRY_SUFFIX_LATEST}
+                     .
+    - docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${GITLAB_DOCKERREGISTRY_SUFFIX}
+    - docker push ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${GITLAB_DOCKERREGISTRY_SUFFIX_LATEST}
+
+docker-build:
+  extends: .docker-build
+  variables:
+    IMAGE_NAME: crops 
+  stage: build
+
+# Docker deploy jobs
+#
+# Make sure DOCKER_HUB_USER/DOCKER_HUB_PW is properly set in the project
+# specific Gitlab CI settings.
+.docker-deploy:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PW
+  stage: deploy
+  when: manual
+  script:
+  - docker pull ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${GITLAB_DOCKERREGISTRY_SUFFIX}
+  - docker tag ${CI_REGISTRY_IMAGE}/${IMAGE_NAME}:${GITLAB_DOCKERREGISTRY_SUFFIX} ${DOCKER_HUB_REPOSITORY}/${IMAGE_NAME}:${DOCKER_HUB_TAG} 
+  - docker push ${DOCKER_HUB_REPOSITORY}/${IMAGE_NAME}:${DOCKER_HUB_TAG}
+
+docker-deploy:
+  extends: .docker-deploy
+  variables:
+    IMAGE_NAME: crops
