@@ -15,10 +15,9 @@ RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/
 RUN chmod a+x /bin/repo
 
 # Script to automate env setup
-COPY startup-tdx-torizon.sh startup-tdx-poky.sh /usr/bin/
+COPY startup-tdx.sh startup-tdx.sh /usr/bin/
 RUN chmod 755 \
-    /usr/bin/startup-tdx-torizon.sh \
-	/usr/bin/startup-tdx-poky.sh
+    /usr/bin/startup-tdx.sh
 
 # JSON file for Toradex Easy Installer server over HTTP
 COPY image_list.json /etc/
