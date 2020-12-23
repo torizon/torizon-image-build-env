@@ -85,12 +85,6 @@ then
     done    
 fi
 
-# Create image_list.json for Toradex Easy Installer
-if [ ! -f $WDIR/$DISTRO/$BDDIR/image_list.json ]
-then
-    cp /etc/image_list.json $WDIR/$DISTRO/$BDDIR/image_list.json
-fi
-
 # Only start build if requested
 if [ -z "$TARGET" ]
 then

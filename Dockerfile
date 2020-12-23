@@ -19,7 +19,4 @@ COPY startup-tdx.sh startup-tdx.sh /usr/bin/
 RUN chmod 755 \
     /usr/bin/startup-tdx.sh
 
-# JSON file for Toradex Easy Installer server over HTTP
-COPY image_list.json /etc/
-
 USER usersetup
