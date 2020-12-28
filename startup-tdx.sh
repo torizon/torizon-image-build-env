@@ -2,13 +2,6 @@
 
 WDIR=/workdir
 
-# CHeck if Distro is set otherwise exit
-if [ -z "$DISTRO" ]
-then
-    echo "Please set DISTRO variable to either 'torizon' or 'bsp'"
-    exit 1
-fi
-
 # Check if machine is set otherwise exit
 if [ -z "$MACHINE" ]
 then
@@ -19,7 +12,7 @@ fi
 # Check if default build directory is setup
 if [ -z "$1" ]
 then
-    BDDIR=build*
+    BDDIR=build-torizon*
 else
     BDDIR="$1"
 fi
@@ -30,12 +23,9 @@ then
     BRANCH=dunfell-5.x.y
 fi
 
-if [[ -z "$MANIFEST" && $DISTRO == "torizon" ]]
+if [ -z "$MANIFEST" ]
 then
     MANIFEST=torizoncore/default.xml
-elif [[  -z "$MANIFEST" && $DISTRO == "bsp" ]]
-then
-    MANIFEST=tdxref/default.xml
 fi
 
 # Configure Git if not configured
@@ -45,9 +35,9 @@ if [ ! $(git config --global --get user.email) ]; then
     git config --global color.ui false
 fi
 
-# Create a directory for chosen distro
-mkdir -p $WDIR/$DISTRO
-cd $WDIR/$DISTRO
+# Create a directory for yocto setup
+mkdir -p $WDIR/torizon
+cd $WDIR/torizon
 
 # Initialize if repo not yet initialized
 repo status 2> /dev/null
@@ -58,26 +48,25 @@ then
 fi # Do not sync automatically if repo is setup already
 
 # Initialize build environment
-if [ $DISTRO == 'torizon' ]
+if [ -z "$DISTRO"  ]
 then
     MACHINE=$MACHINE source setup-environment
-elif [ $DISTRO == 'bsp' ]
-then
-    . export
+else
+    DISTRO=$DISTRO MACHINE=$MACHINE source setup-environment
 fi
 
 # Accept Freescale/NXP EULA
-if ! grep -q ACCEPT_FSL_EULA $WDIR/$DISTRO/$BDDIR/conf/local.conf
+if ! grep -q ACCEPT_FSL_EULA $WDIR/torizon/$BDDIR/conf/local.conf
 then
     echo 'You have to accept freescale EULA. Read it carefully and then accept it.'
     echo 'Press "space" to scroll down and "q" to exit'
     sleep 3
-    less $WDIR/$DISTRO/layers/meta-freescale/EULA
+    less $WDIR/torizon/layers/meta-freescale/EULA
     while true; do
         read -p "Do you accept the EULA? [y/n] " yn
         case $yn in
             [Yy]* ) echo 'EULA accepted'
-                echo 'ACCEPT_FSL_EULA="1"' >> $WDIR/$DISTRO/$BDDIR/conf/local.conf
+                echo 'ACCEPT_FSL_EULA="1"' >> $WDIR/torizon/$BDDIR/conf/local.conf
                 break;;
             [Nn]* ) exit;;
             * ) echo "Please answer yes or no.";;
@@ -88,11 +77,11 @@ fi
 # Only start build if requested
 if [ -z "$TARGET" ]
 then
-    echo "Build enviorment configured"
+    echo "Build environment configured"
 else
-    echo "Build enviorment configured. Building target image $TARGET"
-    echo "> MACHINE=$MACHINE bitbake $TARGET"
-    MACHINE=$MACHINE bitbake $TARGET
+    echo "Build environment configured. Building target image $TARGET"
+    echo "> DISTRO=$DISTRO MACHINE=$MACHINE bitbake $TARGET"
+    bitbake $TARGET
 fi
 
 # Spawn a shell
