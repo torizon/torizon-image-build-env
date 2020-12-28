@@ -11,11 +11,10 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     vim-tiny \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo
-RUN chmod a+x /bin/repo
+RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo && chmod a+x /bin/repo
 
 # Script to automate env setup
-COPY startup-tdx.sh startup-tdx.sh /usr/bin/
+COPY startup-tdx.sh /usr/bin/
 RUN chmod 755 \
     /usr/bin/startup-tdx.sh
 
