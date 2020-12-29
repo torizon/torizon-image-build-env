@@ -15,7 +15,5 @@ RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/
 
 # Script to automate env setup
 COPY startup-tdx.sh /usr/bin/
-RUN chmod 755 \
-    /usr/bin/startup-tdx.sh
 
 USER usersetup
