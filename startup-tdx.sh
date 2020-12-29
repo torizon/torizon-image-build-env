@@ -75,13 +75,13 @@ then
 fi
 
 # Only start build if requested
-if [ -z "$TARGET" ]
+if [ -z "$IMAGE" ]
 then
     echo "Build environment configured"
 else
-    echo "Build environment configured. Building target image $TARGET"
-    echo "> DISTRO=$DISTRO MACHINE=$MACHINE bitbake $TARGET"
-    bitbake $TARGET
+    echo "Build environment configured. Building target image $IMAGE"
+    echo "> DISTRO=$DISTRO MACHINE=$MACHINE bitbake $IMAGE"
+    bitbake $IMAGE
 fi
 
 # Spawn a shell
