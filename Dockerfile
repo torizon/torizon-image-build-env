@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     curl \
     default-jre \
     vim-tiny \
+    git-lfs \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo && chmod a+x /bin/repo
