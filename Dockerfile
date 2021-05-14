@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     curl \
     default-jre \
     vim \
+    nano \
     git-lfs \
     && rm -rf /var/lib/apt/lists/*
 
