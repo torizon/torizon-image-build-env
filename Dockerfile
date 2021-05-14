@@ -8,7 +8,7 @@ USER root
 RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
     curl \
     default-jre \
-    vim-tiny \
+    vim \
     git-lfs \
     && rm -rf /var/lib/apt/lists/*
 
