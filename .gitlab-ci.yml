@@ -42,12 +42,12 @@ docker-build:
 
 # Docker deploy jobs
 #
-# Make sure DOCKER_HUB_USER/DOCKER_HUB_PW is properly set in the project
+# Make sure DOCKER_HUB_USER/DOCKER_HUB_TOKEN is properly set in the project
 # specific Gitlab CI settings.
 .docker-deploy:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PW
+    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_TOKEN
   stage: deploy
   when: manual
   script:
