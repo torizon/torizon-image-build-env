@@ -1,4 +1,4 @@
-FROM crops/poky:debian-10
+FROM crops/poky:debian-11
 
 USER root
 
