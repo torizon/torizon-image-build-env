@@ -20,7 +20,7 @@ fi
 # Check if branch is passed as argument
 if [ -z "$BRANCH" ]
 then
-    BRANCH=dunfell-5.x.y
+    BRANCH=kirkstone-6.x.y
 fi
 
 if [ -z "$MANIFEST" ]
