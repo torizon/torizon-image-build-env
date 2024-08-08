@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     git-lfs \
     python3-gi \
     gir1.2-ostree-1.0 \
+    python3-requests \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > /bin/repo && chmod a+x /bin/repo
