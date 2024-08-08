@@ -20,12 +20,12 @@ fi
 # Check if branch is passed as argument
 if [ -z "$BRANCH" ]
 then
-    BRANCH=kirkstone-6.x.y
+    BRANCH=scarthgap-7.x.y
 fi
 
 if [ -z "$MANIFEST" ]
 then
-    MANIFEST=torizoncore/default.xml
+    MANIFEST=torizon/default.xml
 fi
 
 # Configure Git if not configured
